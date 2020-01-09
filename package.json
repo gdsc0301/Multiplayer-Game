@@ -1,0 +1,19 @@
+{
+  "name": "puzzle",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Guilherme Carvalho",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gdsc0301/Multiplayer-Game.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gdsc0301/Multiplayer-Game/issues"
+  },
+  "homepage": "https://github.com/gdsc0301/Multiplayer-Game#readme",
+  "description": ""
+}
