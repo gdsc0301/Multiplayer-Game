@@ -1,5 +1,4 @@
 'use strict';
-const functions = require("firebase-functions");
 
 setInterval(update, 1000/60);
 
