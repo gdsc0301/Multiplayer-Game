@@ -1,4 +1,4 @@
-var external_ip = '189.121.86.34';
+var external_ip = 'localhost';
 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
@@ -15,17 +15,25 @@ function start() {
     setInterval(update, 1000/60);
 }
 
-var req;
 function update() {
-    req = new XMLHttpRequest();
-    req.open("GET", 'http://'+ external_ip +':8080');
-    req.send('');
+    //const req = new XMLHttpRequest();
+    //req.open("GET", 'http://'+ external_ip +':8080');
+    //req.send('');
+    const req = new WebSocket(`ws://` + external_ip + `:8082`);
+    req.onmessage = function(msg) {
+        req.close();
 
-    req.onload = function(e){
+        //console.log(`data:`);console.log(msg.data);
         old = cubes;
-        cubes = JSON.parse(e.target.response);
+        cubes = JSON.parse(msg.data);
         draw();
-    };
+    }
+
+    // req.onload = function(e){
+    //     old = cubes;
+    //     cubes = JSON.parse(e.target.response);
+    //     draw();
+    // };
 }
 
 function draw() {
@@ -42,9 +50,18 @@ function draw() {
 }
 
 function newCube() {
-    req = new XMLHttpRequest();
-    req.open("GET", 'http://189.121.86.34:8080/addNew');
-    req.send('');
+    const req = new WebSocket(`ws://` + external_ip + `:8082/addCube`);
+    req.onopen = function(e) {
+        console.log(e);
+        req.send(`Hi, this is from browser`);
+    };
+    
+    req.onmessage = function(e) {
+        console.log(`FROM SERVER:`);
+        console.log(e.data);
+
+        req.close();
+    }
 }
 
 start();

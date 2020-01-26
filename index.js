@@ -42,10 +42,11 @@ function update() {
 
 setInterval(update, 1000/60);
 
-var http = require("http");
-http.createServer(function(req, res) {
-    res.writeHead(200, {'Access-Control-Allow-Origin': '*'});
-    if(req.url === '/addNew'){
+const WebSocket = require(`ws`);
+const ws = new WebSocket.Server({port: 8082})
+
+ws.on(`connection`, (conn, req) => {
+    if(req.url === `/addCube`) {
         const newCube = {
             x       : Math.floor(Math.random() * Math.floor(max_x - 52)),
             y       : Math.floor(Math.random() * Math.floor(max_y - 52)),
@@ -62,7 +63,25 @@ http.createServer(function(req, res) {
         };
         
         cubes.push(newCube);
+
+        return;
     }
 
-    res.end(JSON.stringify(cubes));
-}).listen(8080);
+    conn.send(JSON.stringify(cubes));
+
+    conn.on(`message`, (msg) => {
+        conn.send(`Received:`);
+        console.log(msg);
+    })
+    conn.close();
+})
+
+// var http = require("http");
+// http.createServer(function(req, res) {
+//     res.writeHead(200, {'Access-Control-Allow-Origin': '*'});
+//     if(req.url === '/addNew'){
+//         
+//     }
+
+//     res.end(JSON.stringify(cubes));
+// }).listen(8080);

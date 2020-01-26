@@ -15,5 +15,9 @@
     "url": "https://github.com/gdsc0301/Multiplayer-Game/issues"
   },
   "homepage": "https://github.com/gdsc0301/Multiplayer-Game#readme",
-  "description": ""
+  "description": "Este é um teste de um jogo simples, onde é completamente processado no back end em um servidor NodeJS. E é utilizado requisição HTTP para envio dos dados dos jogadores.",
+  "dependencies": {
+    "ws": "^7.2.1"
+  },
+  "devDependencies": {}
 }
