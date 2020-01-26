@@ -1,4 +1,5 @@
-var external_ip = 'localhost';
+var external_ip = '189.121.86.34';
+external_ip = `192.168.1.106`
 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
@@ -12,7 +13,7 @@ var c = {
 };
 
 function start() {
-    setInterval(update, 1000/60);
+    setInterval(update, 1000/30);
 }
 
 function update() {

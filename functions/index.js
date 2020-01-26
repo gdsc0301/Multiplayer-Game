@@ -1,4 +1,11 @@
 'use strict';
+const functions = require("firebase-functions");
+
+setInterval(update, 1000/60);
+
+const WebSocket = require(`ws`);
+const ws = new WebSocket.Server({port: 8082})
+
 var cubes = [{
     x       : 0,
     y       : 0,
@@ -40,12 +47,8 @@ function update() {
     });
 }
 
-setInterval(update, 1000/60);
-
-const WebSocket = require(`ws`);
-const ws = new WebSocket.Server({port: 8082})
-
 ws.on(`connection`, (conn, req) => {
+
     if(req.url === `/addCube`) {
         const newCube = {
             x       : Math.floor(Math.random() * Math.floor(max_x - 52)),
@@ -74,14 +77,4 @@ ws.on(`connection`, (conn, req) => {
         console.log(msg);
     })
     conn.close();
-})
-
-// var http = require("http");
-// http.createServer(function(req, res) {
-//     res.writeHead(200, {'Access-Control-Allow-Origin': '*'});
-//     if(req.url === '/addNew'){
-//         
-//     }
-
-//     res.end(JSON.stringify(cubes));
-// }).listen(8080);
+});
