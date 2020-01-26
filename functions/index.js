@@ -22,6 +22,7 @@ var cubes = [{
 }];
 
 const max_x = 320, max_y = 600;
+const UPDATE = 1, NEW = 2;
 
 function update() {
     var count = 0;
@@ -47,34 +48,30 @@ function update() {
     });
 }
 
-ws.on(`connection`, (conn, req) => {
-
-    if(req.url === `/addCube`) {
-        const newCube = {
-            x       : Math.floor(Math.random() * Math.floor(max_x - 52)),
-            y       : Math.floor(Math.random() * Math.floor(max_y - 52)),
-            vel : {
-                x   : 2,
-                y   : 2
-            },
-            x_rev   : false,
-            y_rev   : false,
-            w       : 50,
-            h       : 50,
-            color   : '#febebf',
-            life    : 100
-        };
-        
-        cubes.push(newCube);
-
-        return;
-    }
-
+ws.on(`connection`, (conn) => {
     conn.send(JSON.stringify(cubes));
 
     conn.on(`message`, (msg) => {
-        conn.send(`Received:`);
-        console.log(msg);
-    })
+        if(msg === UPDATE) {
+            conn.send(JSON.stringify(cubes));
+        }else if(msg === NEW) {
+            const newCube = {
+                x       : Math.floor(Math.random() * Math.floor(max_x - 52)),
+                y       : Math.floor(Math.random() * Math.floor(max_y - 52)),
+                vel : {
+                    x   : 2,
+                    y   : 2
+                },
+                x_rev   : false,
+                y_rev   : false,
+                w       : 50,
+                h       : 50,
+                color   : '#febebf',
+                life    : 100
+            };
+            
+            cubes.push(newCube);
+        }
+    });
     conn.close();
 });

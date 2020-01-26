@@ -1,5 +1,5 @@
 var external_ip = '189.121.86.34';
-external_ip = `192.168.1.106`
+//external_ip = `192.168.1.106`;
 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
@@ -11,30 +11,24 @@ var c = {
     width : 800,
     height: 600
 };
+var req;
+
+const UPDATE = 1, NEW = 2;
 
 function start() {
-    setInterval(update, 1000/30);
-}
-
-function update() {
-    //const req = new XMLHttpRequest();
-    //req.open("GET", 'http://'+ external_ip +':8080');
-    //req.send('');
-    const req = new WebSocket(`ws://` + external_ip + `:8082`);
+    req = new WebSocket(`ws://` + external_ip + `:8082`);
     req.onmessage = function(msg) {
         req.close();
 
-        //console.log(`data:`);console.log(msg.data);
         old = cubes;
         cubes = JSON.parse(msg.data);
         draw();
     }
+    setInterval(update, 1000/30);
+}
 
-    // req.onload = function(e){
-    //     old = cubes;
-    //     cubes = JSON.parse(e.target.response);
-    //     draw();
-    // };
+function update() {
+    req.send(UPDATE);
 }
 
 function draw() {
@@ -51,18 +45,7 @@ function draw() {
 }
 
 function newCube() {
-    const req = new WebSocket(`ws://` + external_ip + `:8082/addCube`);
-    req.onopen = function(e) {
-        console.log(e);
-        req.send(`Hi, this is from browser`);
-    };
-    
-    req.onmessage = function(e) {
-        console.log(`FROM SERVER:`);
-        console.log(e.data);
-
-        req.close();
-    }
+    req.send(NEW);
 }
 
 start();
