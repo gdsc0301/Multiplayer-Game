@@ -49,8 +49,6 @@ function update() {
 }
 
 ws.on(`connection`, (conn) => {
-    conn.send(JSON.stringify(cubes));
-
     conn.on(`message`, (msg) => {
         if(msg === UPDATE) {
             conn.send(JSON.stringify(cubes));
@@ -73,5 +71,4 @@ ws.on(`connection`, (conn) => {
             cubes.push(newCube);
         }
     });
-    conn.close();
 });

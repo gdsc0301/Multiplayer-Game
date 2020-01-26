@@ -18,8 +18,6 @@ const UPDATE = 1, NEW = 2;
 function start() {
     req = new WebSocket(`ws://` + external_ip + `:8082`);
     req.onmessage = function(msg) {
-        req.close();
-
         old = cubes;
         cubes = JSON.parse(msg.data);
         draw();
